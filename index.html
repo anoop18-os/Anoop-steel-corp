@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anoop Steel Corporation | Industrial Steel & Metal Solutions</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        steel: {
+                            900: '#0a0d14',
+                            800: '#131824',
+                            700: '#1e2535',
+                            600: '#2d3748',
+                            500: '#4a5568',
+                            accent: '#f59e0b', /* Industrial Amber */
+                            blue: '#3b82f6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(19, 24, 36, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-accent {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+        }
+        .text-glow {
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        }
+        .card-tilt {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-tilt:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(245, 158, 11, 0.2);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0d14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3748;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+    </style>
+</head>
+<body class="bg-steel-900 text-gray-100 font-sans antialiased min-h-screen selection:bg-amber-500 selection:text-black">
+
+    <!-- TOP BAR -->
+    <div class="bg-steel-800 border-b border-gray-800 text-xs py-2 px-4 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div class="flex items-center gap-4 text-gray-400">
+                <span><i class="fas fa-map-marker-alt text-amber-500 mr-1"></i> Vikas Colony, Gorakhpur, UP</span>
+                <span><i class="fas fa-phone-alt text-amber-500 mr-1"></i> +91 9789098766</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    <span class="w-1.5 h-1.5 mr-1.5 bg-amber-500 rounded-full animate-ping"></span> Live Backend Connected
+                </span>
+                <button onclick="openBackendModal()" class="bg-steel-700 hover:bg-amber-500 hover:text-black text-amber-400 px-3 py-1 rounded transition font-semibold text-xs flex items-center gap-1.5">
+                    <i class="fas fa-cogs"></i> Backend Price/Stock Manager
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER / NAVBAR -->
+    <header class="glass-panel sticky top-[33px] sm:top-[37px] z-40 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-black font-extrabold text-xl shadow-lg glow-accent">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <div>
+                    <h1 class="font-display font-black text-lg sm:text-xl tracking-wider text-white">ANOOP STEEL <span class="text-amber-500">CORP.</span></h1>
+                    <p class="text-[10px] text-gray-400 tracking-widest uppercase font-semibold">Prop: Anoop Singh | Industrial Metal Hub</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
+                    <a href="#products" class="hover:text-amber-500 transition">Products</a>
+                    <a href="#about" class="hover:text-amber-500 transition">About Us</a>
+                    <a href="#contact" class="hover:text-amber-500 transition">Contact</a>
+                </nav>
+                <button onclick="toggleCart()" class="relative bg-steel-800 border border-gray-700 hover:border-amber-500 p-2.5 rounded-xl transition flex items-center gap-2 text-gray-200">
+                    <i class="fas fa-shopping-cart text-amber-500"></i>
+                    <span class="hidden sm:inline text-xs font-semibold">Cart</span>
+                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-amber-500 text-black text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative overflow-hidden py-16 sm:py-24 border-b border-gray-800">
+        <div class="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:24px_24px] animate-pulse-glow"></div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider">
+                    <i class="fas fa-shield-alt"></i> Premium Quality Industrial Steel
+                </div>
+                <h1 class="font-display text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
+                    BUILDING THE <span class="text-amber-500 text-glow">FUTURE</span> WITH STRENGTH.
+                </h1>
+                <p class="text-gray-400 text-base sm:text-lg leading-relaxed">
+                    Welcome to <strong class="text-white">Anoop Steel Corporation</strong> (Proprietor: Anoop Singh). We supply top-tier TMT bars, structural steel, stainless sheets, and industrial pipes directly from Vikas Colony, Gorakhpur with transparent live pricing.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="#products" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-8 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2 text-sm">
+                        <i class="fas fa-boxes"></i> Explore Catalog
+                    </a>
+                    <a href="tel:9789098766" class="bg-steel-800 hover:bg-steel-700 border border-gray-700 text-white font-bold px-6 py-3.5 rounded-xl transition flex items-center gap-2 text-sm">
+                        <i class="fas fa-phone-alt text-amber-500"></i> Direct Call
+                    </a>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="absolute -inset-1 bg-gradient-to-r from-amber-500 to-blue-600 rounded-2xl blur-xl opacity-30 animate-pulse"></div>
+                <div class="relative rounded-2xl overflow-hidden glass-panel border border-gray-700 p-4 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80" alt="Steel Industry" class="rounded-xl w-full h-[320px] sm:h-[380px] object-cover filter brightness-90 contrast-110">
+                    <div class="absolute bottom-8 left-8 right-8 bg-steel-900/90 backdrop-blur-md p-4 rounded-xl border border-gray-700 flex justify-between items-center">
+                        <div>
+                            <p class="text-xs text-amber-500 font-bold uppercase tracking-wider">Verified Stock Status</p>
+                            <p class="text-sm font-bold text-white">Live Inventory & Automated Backend</p>
+                        </div>
+                        <span class="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full font-semibold border border-green-500/30">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section id="products" class="py-16 max-w-7xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+            <div>
+                <p class="text-amber-500 text-xs font-bold uppercase tracking-widest mb-1">Dynamic Showcase</p>
+                <h2 class="font-display text-3xl font-black text-white">Our Product Inventory</h2>
+            </div>
+            <!-- Category Filters -->
+            <div class="flex flex-wrap gap-2" id="filter-buttons">
+                <button onclick="filterProducts('all')" class="filter-btn active bg-amber-500 text-black px-4 py-2 rounded-lg text-xs font-bold transition shadow">All Products</button>
+                <button onclick="filterProducts('TMT Bars')" class="filter-btn bg-steel-800 text-gray-300 hover:bg-steel-700 px-4 py-2 rounded-lg text-xs font-bold transition">TMT Bars</button>
+                <button onclick="filterProducts('Structural Steel')" class="filter-btn bg-steel-800 text-gray-300 hover:bg-steel-700 px-4 py-2 rounded-lg text-xs font-bold transition">Structural</button>
+                <button onclick="filterProducts('Stainless Steel')" class="filter-btn bg-steel-800 text-gray-300 hover:bg-steel-700 px-4 py-2 rounded-lg text-xs font-bold transition">Stainless Steel</button>
+                <button onclick="filterProducts('Industrial Pipes')" class="filter-btn bg-steel-800 text-gray-300 hover:bg-steel-700 px-4 py-2 rounded-lg text-xs font-bold transition">Pipes & Rods</button>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Populated via JavaScript -->
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="py-16 bg-steel-800/50 border-y border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <p class="text-amber-500 text-xs font-bold uppercase tracking-widest">About Proprietor & Enterprise</p>
+                <h2 class="font-display text-3xl font-black text-white">ANOOP STEEL CORPORATION</h2>
+                <p class="text-gray-300 text-sm leading-relaxed">
+                    Based in <strong class="text-white">Vikas Colony, Gorakhpur</strong>, Anoop Steel Corporation has established a stellar reputation for uncompromised quality, durability, and customer trust under the leadership of proprietor <strong class="text-amber-500">Anoop Singh</strong>.
+                </p>
+                <div class="grid grid-cols-2 gap-4 pt-2">
+                    <div class="glass-panel p-4 rounded-xl border border-gray-700">
+                        <i class="fas fa-award text-amber-500 text-2xl mb-2"></i>
+                        <h4 class="font-bold text-white text-sm">Certified Quality</h4>
+                        <p class="text-xs text-gray-400 mt-1">High-grade raw materials tested for maximum tensile strength.</p>
+                    </div>
+                    <div class="glass-panel p-4 rounded-xl border border-gray-700">
+                        <i class="fas fa-truck-loading text-amber-500 text-2xl mb-2"></i>
+                        <h4 class="font-bold text-white text-sm">Prompt Delivery</h4>
+                        <p class="text-xs text-gray-400 mt-1">Reliable transit and dispatch across Gorakhpur and nearby regions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl border border-gray-700 space-y-4">
+                <h3 class="font-display font-bold text-xl text-white border-b border-gray-700 pb-3 flex items-center gap-2">
+                    <i class="fas fa-id-card text-amber-500"></i> Business Information
+                </h3>
+                <ul class="space-y-3 text-sm text-gray-300">
+                    <li class="flex justify-between border-b border-gray-800 pb-2">
+                        <span class="text-gray-400">Enterprise Name:</span>
+                        <span class="font-bold text-white">Anoop Steel Corporation</span>
+                    </li>
+                    <li class="flex justify-between border-b border-gray-800 pb-2">
+                        <span class="text-gray-400">Proprietor:</span>
+                        <span class="font-bold text-amber-500">Anoop Singh</span>
+                    </li>
+                    <li class="flex justify-between border-b border-gray-800 pb-2">
+                        <span class="text-gray-400">Location:</span>
+                        <span class="font-bold text-white">Vikas Colony, Gorakhpur (UP)</span>
+                    </li>
+                    <li class="flex justify-between border-b border-gray-800 pb-2">
+                        <span class="text-gray-400">Contact Number:</span>
+                        <span class="font-bold text-white">+91 9789098766</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="text-gray-400">Specialization:</span>
+                        <span class="font-bold text-white">TMT, Structural & Industrial Steel</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-16 max-w-7xl mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <p class="text-amber-500 text-xs font-bold uppercase tracking-widest">Get In Touch</p>
+            <h2 class="font-display text-3xl font-black text-white">Contact & Warehouse Location</h2>
+            <p class="text-gray-400 text-sm">Reach out to us for bulk inquiries, custom orders, or direct quotations.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-panel p-6 rounded-2xl border border-gray-700 text-center space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto text-xl">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3 class="font-bold text-white text-lg">Address</h3>
+                <p class="text-gray-400 text-sm">Anoop Steel Corporation, Vikas Colony, Gorakhpur, Uttar Pradesh - 273001</p>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl border border-gray-700 text-center space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto text-xl">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <h3 class="font-bold text-white text-lg">Phone Number</h3>
+                <p class="text-gray-400 text-sm">+91 9789098766<br>(Prop. Anoop Singh)</p>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl border border-gray-700 text-center space-y-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mx-auto text-xl">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3 class="font-bold text-white text-lg">Working Hours</h3>
+                <p class="text-gray-400 text-sm">Monday - Saturday<br>9:00 AM - 8:00 PM</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-steel-800 border-t border-gray-800 py-8 px-4 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 Anoop Steel Corporation. Proprietor: Anoop Singh. All Rights Reserved.</p>
+            <p class="text-amber-500"><i class="fas fa-map-marker-alt mr-1"></i> Vikas Colony, Gorakhpur</p>
+        </div>
+    </footer>
+
+    <!-- CART SIDEBAR MODAL -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end transition-opacity">
+        <div class="bg-steel-800 w-full max-w-md h-full flex flex-col border-l border-gray-700 shadow-2xl">
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center bg-steel-900">
+                <h3 class="font-display font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-shopping-cart text-amber-500"></i> Your Order Cart
+                </h3>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto p-4 space-y-4 divide-y divide-gray-800">
+                <!-- Cart items inserted dynamically -->
+            </div>
+            <div class="p-4 bg-steel-900 border-t border-gray-700 space-y-4">
+                <div class="flex justify-between items-center text-lg font-bold">
+                    <span class="text-gray-300">Total Amount:</span>
+                    <span id="cart-total" class="text-amber-500 font-display">₹0</span>
+                </div>
+                <button onclick="openCheckout()" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm">
+                    <i class="fas fa-bolt"></i> Place Order Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-steel-800 border border-gray-700 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="p-4 bg-steel-900 border-b border-gray-700 flex justify-between items-center">
+                <h3 class="font-display font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-file-invoice-dollar text-amber-500"></i> Finalize Order Details
+                </h3>
+                <button onclick="closeCheckout()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="order-form" onsubmit="submitOrder(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Your Name / Company Name</label>
+                    <input type="text" id="cust-name" required class="w-full bg-steel-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-amber-500 focus:outline-none" placeholder="Enter full name">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Mobile Number</label>
+                    <input type="tel" id="cust-phone" required class="w-full bg-steel-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-amber-500 focus:outline-none" placeholder="10-digit mobile number">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Delivery Address / Destination</label>
+                    <textarea id="cust-address" required rows="3" class="w-full bg-steel-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-amber-500 focus:outline-none" placeholder="Enter delivery location (e.g. Gorakhpur site)"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-lg"></i> Send Order via WhatsApp to Anoop Singh
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- BACKEND MANAGER MODAL -->
+    <div id="backend-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-steel-800 border border-gray-700 rounded-2xl w-full max-w-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="p-4 bg-steel-900 border-b border-gray-700 flex justify-between items-center">
+                <h3 class="font-display font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-database text-amber-500"></i> Backend Database: Prices & Stock Control
+                </h3>
+                <button onclick="closeBackendModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 flex-1">
+                <p class="text-xs text-gray-400">Modify prices and stock levels here. Changes apply immediately to the frontend product catalog.</p>
+                <div id="backend-product-list" class="space-y-3">
+                    <!-- Dynamic Rows -->
+                </div>
+            </div>
+            <div class="p-4 bg-steel-900 border-t border-gray-700 flex justify-end">
+                <button onclick="closeBackendModal()" class="bg-amber-500 hover:bg-amber-400 text-black px-6 py-2 rounded-xl font-bold text-sm">Save & Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT BACKEND & LOGIC -->
+    <script>
+        // BACKEND SIMULATED DATABASE (Products, Variety, Prices, Stock, Images)
+        let backendProducts = [
+            { id: 1, name: "Fe 500D TMT Rebars", category: "TMT Bars", price: 62000, unit: "per Ton", stock: "In Stock (120 Tons)", image: "https://images.unsplash.com/photo-1585129819544-4c5c4442032e?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, name: "Fe 550 Grade TMT Steel", category: "TMT Bars", price: 64500, unit: "per Ton", stock: "In Stock (85 Tons)", image: "https://images.unsplash.com/photo-1535813584898-fbb3ccd7631b?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, name: "Structural MS Angles", category: "Structural Steel", price: 58000, unit: "per Ton", stock: "In Stock (50 Tons)", image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, name: "Industrial MS Channels (ISMC)", category: "Structural Steel", price: 59500, unit: "per Ton", stock: "Low Stock (15 Tons)", image: "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, name: "Stainless Steel Sheets (304)", category: "Stainless Steel", price: 185000, unit: "per Ton", stock: "In Stock (30 Tons)", image: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, name: "Industrial Steel Pipes", category: "Industrial Pipes", price: 66000, unit: "per Ton", stock: "In Stock (45 Tons)", image: "https://images.unsplash.com/photo-1541888946425-d0fbb18f764c?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        let cart = [];
+        let currentFilter = 'all';
+
+        // Render Products
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            
+            const filtered = filter === 'all' ? backendProducts : backendProducts.filter(p => p.category === filter);
+
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "card-tilt glass-panel rounded-2xl overflow-hidden border border-gray-700 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                            <span class="absolute top-3 left-3 bg-steel-900/80 backdrop-blur-md text-amber-400 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">${product.category}</span>
+                        </div>
+                        <div class="p-5 space-y-3">
+                            <h3 class="font-display font-bold text-white text-lg">${product.name}</h3>
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <span class="text-xs text-gray-400">Backend Price:</span>
+                                    <p class="font-display font-black text-amber-500 text-xl">₹${product.price.toLocaleString()} <span class="text-xs text-gray-400 font-normal">${product.unit}</span></p>
+                                </div>
+                                <span class="text-[11px] font-semibold px-2.5 py-1 rounded bg-green-500/10 text-green-400 border border-green-500/20">${product.stock}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="addToCart(${product.id})" class="w-full bg-steel-700 hover:bg-amber-500 hover:text-black text-white font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-xs shadow">
+                            <i class="fas fa-cart-plus"></i> Add to Order List
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter Function
+        function filterProducts(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-black');
+                btn.classList.add('bg-steel-800', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-steel-800', 'text-gray-300');
+            event.target.classList.add('bg-amber-500', 'text-black');
+            renderProducts(category);
+        }
+
+        // Cart Actions
+        function addToCart(id) {
+            const product = backendProducts.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartUI();
+            toggleCart();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            badge.innerText = totalCount;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-500 py-8 text-sm">Your order cart is currently empty.</p>`;
+                totalEl.innerText = '₹0';
+                return;
+            }
+
+            container.innerHTML = '';
+            let grandTotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                grandTotal += itemTotal;
+
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center py-3";
+                div.innerHTML = `
+                    <div>
+                        <h4 class="font-bold text-white text-sm">${item.name}</h4>
+                        <p class="text-xs text-amber-500">₹${item.price.toLocaleString()} x ${item.qty}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="changeQty(${index}, 1)" class="w-7 h-7 rounded bg-steel-700 text-white font-bold hover:bg-amber-500 hover:text-black transition">+</button>
+                        <span class="text-sm font-bold text-white">${item.qty}</span>
+                        <button onclick="changeQty(${index}, -1)" class="w-7 h-7 rounded bg-steel-700 text-white font-bold hover:bg-amber-500 hover:text-black transition">-</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            totalEl.innerText = `₹${grandTotal.toLocaleString()}`;
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            toggleCart();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        // WhatsApp Order Submission
+        function submitOrder(e) {
+            e.preventDefault();
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const address = document.getElementById('cust-address').value;
+
+            let orderText = `*NEW ORDER - ANOOP STEEL CORPORATION*\n`;
+            orderText += `*Proprietor:* Anoop Singh\n`;
+            orderText += `*Customer:* ${name}\n`;
+            orderText += `*Phone:* ${phone}\n`;
+            orderText += `*Delivery Address:* ${address}\n\n*Items Ordered:*\n`;
+
+            let total = 0;
+            cart.forEach(item => {
+                let sub = item.price * item.qty;
+                total += sub;
+                orderText += `- ${item.name} (${item.qty} ${item.unit}) : ₹${sub.toLocaleString()}\n`;
+            });
+
+            orderText += `\n*Total Order Value:* ₹${total.toLocaleString()}`;
+
+            const encoded = encodeURIComponent(orderText);
+            const whatsappUrl = `https://wa.me/919789098766?text=${encoded}`;
+            
+            window.open(whatsappUrl, '_blank');
+            closeCheckout();
+            cart = [];
+            updateCartUI();
+        }
+
+        // Backend Manager Modal
+        function openBackendModal() {
+            const list = document.getElementById('backend-product-list');
+            list.innerHTML = '';
+
+            backendProducts.forEach((p, idx) => {
+                const row = document.createElement('div');
+                row.className = "glass-panel p-4 rounded-xl border border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-4";
+                row.innerHTML = `
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <img src="${p.image}" class="w-12 h-12 rounded-lg object-cover">
+                        <div>
+                            <h4 class="font-bold text-white text-sm">${p.name}</h4>
+                            <span class="text-xs text-gray-400">${p.category}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto justify-between">
+                        <div>
+                            <label class="text-[10px] text-gray-400 block">Price (₹)</label>
+                            <input type="number" id="price-${idx}" value="${p.price}" class="bg-steel-900 border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white w-32 focus:border-amber-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-gray-400 block">Stock Status</label>
+                            <input type="text" id="stock-${idx}" value="${p.stock}" class="bg-steel-900 border border-gray-700 rounded-lg px-3 py-1.5 text-sm text-white w-36 focus:border-amber-500 focus:outline-none">
+                        </div>
+                        <button onclick="updateBackendProduct(${idx})" class="mt-4 bg-amber-500 hover:bg-amber-400 text-black px-4 py-2 rounded-lg text-xs font-bold transition">Update</button>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+
+            document.getElementById('backend-modal').classList.remove('hidden');
+        }
+
+        function closeBackendModal() {
+            document.getElementById('backend-modal').classList.add('hidden');
+            renderProducts(currentFilter);
+        }
+
+        function updateBackendProduct(idx) {
+            const newPrice = Number(document.getElementById(`price-${idx}`).value);
+            const newStock = document.getElementById(`stock-${idx}`).value;
+
+            backendProducts[idx].price = newPrice;
+            backendProducts[idx].stock = newStock;
+
+            alert(`Updated successfully for ${backendProducts[idx].name}!`);
+        }
+
+        // Initialize on Load
+        window.onload = () => {
+            renderProducts('all');
+        };
+    </script>
+</body>
+</html>
